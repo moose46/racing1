@@ -1,3 +1,22 @@
+"""
+    Reads drivers.csv file and imports drivers into the drivers table.
+    If there are duplicates, it will stop, and throw up
+    must have django-extensions installed and in entered into the INSTALLED_APPS settings file.
+    
+        INSTALLED_APPS = [
+            "nascar.apps.NascarConfig",
+            "django.contrib.admin",
+            "django.contrib.auth",
+            "django.contrib.contenttypes",
+            "django.contrib.sessions",
+            "django.contrib.messages",
+            "django.contrib.staticfiles",
+            "django_extensions",
+        ]
+
+    to run:
+        python manage.py runscript load_drivers_from_csv
+"""
 import csv
 import os
 import sys
@@ -11,18 +30,10 @@ from nascar.models import Driver
 
 # https://k0nze.dev/posts/python-relative-imports-vscode/
 
-files = Path.cwd() / "scripts"
-print(Path.cwd())
-all = Driver.objects.all()
-for d in all:
-    print(d)
-
 
 def run():
     user = User.objects.get(pk=1)
-    with open(
-        "C:\\Users\\me\\Documents\\VisualCodeSource\\racing1\\racing1\\scripts\\drivers.csv"
-    ) as f:
+    with open(Path.cwd() / "scripts" / "drivers.csv") as f:
         f_csv = csv.reader(f, delimiter="\t")
         headers = next(f_csv)
         Row = namedtuple("Row", headers)
