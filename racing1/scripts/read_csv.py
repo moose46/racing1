@@ -10,32 +10,6 @@ from django.utils import timezone
 from nascar.models import Driver
 
 # https://k0nze.dev/posts/python-relative-imports-vscode/
-# class Driver2(models.Model):
-#     now = timezone.datetime
-#     createdAt = models.DateTimeField("date created", auto_now_add=True, null=True)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     updatedAt = models.DateTimeField("date last updated", auto_now=True, null=True)
-#     name = models.CharField(max_length=32, default="")
-#     car_no = models.IntegerField(default=99)
-#     sponsor = models.CharField(max_length=64, default="")
-#     make = models.CharField(max_length=32, default="Toyota")
-#     team = models.CharField(max_length=64, default="")
-#     salary = models.IntegerField(default=0)
-#     starting_position = models.IntegerField(default=0)
-
-#     def __str__(self) -> str:
-#         return str(self.name)
-
-
-# import django
-
-
-# sys.path.append("C:\\Users\\me\\Documents\\VisualCodeSource\\racing1\\racing1")
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "racing1.settings")
-# django.setup()
-
-
-# from django.contrib.auth.models import User
 
 files = Path.cwd() / "scripts"
 print(Path.cwd())
