@@ -12,16 +12,20 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+from environ import Env
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+env = Env()
+env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-m1gc#(az@m5ph0!vp5#oa1w$n2mgjw9@kkk(es(08-rra4%wfl"
-
+# SECRET_KEY = "django-insecure-m1gc#(az@m5ph0!vp5#oa1w$n2mgjw9@kkk(es(08-rra4%wfl"
+# https://maheshvan.medium.com/python-django-hiding-secret-keys-using-django-environ-99f0fab9833b
+SECRET_KEY = "MY_SECRET_KEY"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -31,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "nascar.apps.NascarConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -74,11 +79,11 @@ WSGI_APPLICATION = "racing1.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
+    "default1": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     },
-    "postgres": {
+    "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "nascar",
         "USER": "nascar_user",

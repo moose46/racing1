@@ -8,7 +8,7 @@ from django.utils import timezone
 class Base(models.Model):
     now = timezone.datetime
     createdAt = models.DateTimeField("date created", auto_now_add=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     updatedAt = models.DateTimeField("date last updated", auto_now=True, null=True)
 
     class Meta:
