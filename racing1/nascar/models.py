@@ -16,12 +16,12 @@ class Base(models.Model):
 
 
 class Driver(Base):
-    name = models.CharField(max_length=32, default="")
+    name = models.CharField(max_length=32, default="", null=False)
     car_no = models.IntegerField(default=99)
-    sponsor = models.CharField(max_length=64, default="")
-    make = models.CharField(max_length=32, default="Toyota")
-    team = models.CharField(max_length=64, default="")
-    salary = models.IntegerField(default=0)
+    sponsor = models.CharField(max_length=64, default="N/A")
+    make = models.CharField(max_length=32, default="N/A")
+    team = models.CharField(max_length=64, default="N/A")
+    salary = models.IntegerField(default=3000)
     starting_position = models.IntegerField(default=0)
 
     def __str__(self) -> str:
