@@ -32,6 +32,42 @@ class Driver(Base):
         ordering = ["name"]
 
 
+class Track(Base):
+    """TRACK,OWNER,MILES,CONFIG,CITY,STATE
+
+    Args:
+        Base (_type_): _description_
+    """
+
+    name = models.CharField(max_length=32, default="N/A", null=False)
+    owner = models.CharField(max_length=64, default="N/A")
+    track_length = models.FloatField(default=0.0, null=False)
+    configuration = models.CharField(max_length=16, default="Oval", null=False)
+    city = models.CharField(max_length=64, null=False, default="N/A")
+    state = models.CharField(max_length=64, null=False, default="N/A")
+
+
+class Race(Base):
+    track = models.ForeignKey(Track, on_delete=models.CASCADE)
+    race_date = models.DateField(null=True, auto_now_add=True)
+
+
+class Results(Base):
+    """_summary_
+    POS	DRIVER	CAR	MANUFACTURER	LAPS	START	LED	PTS	BONUS	PENALTY
+
+    Args:
+        Base (_type_): _description_
+    """
+
+    race = models.ForeignKey(Race, on_delete=models.CASCADE)
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
+    finish_pos = models.IntegerField(null=False, default=0)
+    start_pos = models.IntegerField(null=False, default=0)
+    car = models.IntegerField(null=False, default=0)
+    manufacturer = models.CharField(null=False, max_length=32, default="N/A")
+
+
 # class Driver2(models.Model):
 #     now = timezone.datetime
 #     createdAt = models.DateTimeField("date created", auto_now_add=True, null=True)
