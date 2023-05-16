@@ -80,11 +80,11 @@ WSGI_APPLICATION = "racing1.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
+    "default1": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.racing1",
     },
-    "default1": {
+    "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "nascar",
         "USER": "nascar_user",
