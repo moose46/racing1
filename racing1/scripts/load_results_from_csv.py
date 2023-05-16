@@ -15,11 +15,12 @@
         ]
 
     to run:
-        python manage.py runscript load_tracks_from_csv
+        python manage.py runscript load_results_from_csv
 """
 import csv
 import os
 import sys
+import logging
 from collections import namedtuple
 from pathlib import Path
 
@@ -29,18 +30,31 @@ from django.utils import timezone
 from nascar.models import Track
 
 # https://k0nze.dev/posts/python-relative-imports-vscode/
-file_path = Path.home() / "scripts" / "results"
+file_path = Path.cwd() / "scripts" / "results" / "2022"
+logging.basicConfig(
+    filename="log_file.txt",
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    filemode="w",
+)
 
 
 def run():
-    print(file_path)
+    logging.info(file_path)
     user = User.objects.get(pk=1)
-    for f in file_path.glob("*.csv"):
-        race_track = f.stem.split("_")[1]
-        print(race_track)
-    # with open(Path.cwd() / "scripts" / "tracks.csv") as f:
-    #     f_csv = csv.reader(f, delimiter=",")
-    #     headers = next(f_csv)
+    for race_results in file_path.glob("*.csv"):
+        # results = f.stem.split("_")[1]
+        logging.info(race_results)
+        with open(race_results) as f:
+            reader = csv.reader(f, delimiter="\t")
+            rawResult = namedtuple("rawResult", next(reader), rename=True)
+            logging.info(f"rawResults={rawResult}")
+            race_header_fields = next(reader)
+            logging.info(f"race_header_fields={race_header_fields}")
+            result = rawResult(*race_header_fields)
+            logging.info(f"race_header_fields={race_header_fields}")
+            race_details = namedtuple("race_details", race_header_fields)
+            # logging.info(f"race_track={race_details.TRACK}")
     #     # TRACK,OWNER,MILES,CONFIG,CITY,STATE
     #     Row = namedtuple("Row", headers)
 
