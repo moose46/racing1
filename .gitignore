@@ -8,3 +8,5 @@ db.*
 db.sqlite3
 
 racing1/predictions_log.txt
+racing1/log_file.txt
+racing1/db.sqlite3
