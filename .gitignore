@@ -8,3 +8,5 @@ db.*
 db.sqlite3
 
 racing1/predictions_log.txt
+racing1/nascar/migrations/0005_alter_track_configuration.py
+racing1/nascar/migrations/0006_alter_track_name.py

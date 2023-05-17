@@ -1,0 +1,5 @@
+2023-05-16 15:30:39,698 - INFO - C:\Users\me\Documents\VisualCodeSource\racing1\racing1\scripts\results\2022
+2023-05-16 15:30:39,701 - INFO - RaceInfo=RaceInfo(TRACK='Charlotte Motor Speedway', DATE='5/29/2022')
+2023-05-16 15:30:39,702 - DEBUG - Charlotte Motor Speedway 1.5 - Quad-oval
+2023-05-16 15:30:39,703 - INFO - RaceResults(POS='1', DRIVER='Denny Hamlin', CAR='11', MANUFACTURER='Toyota', LAPS='413', START='1', LED='15', PTS='42', BONUS='2', PENALTY='0')
+2023-05-16 15:30:39,703 - CRITICAL - Denny Hamlin

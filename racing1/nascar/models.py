@@ -39,17 +39,27 @@ class Track(Base):
         Base (_type_): _description_
     """
 
-    name = models.CharField(max_length=32, default="N/A", null=False)
+    name = models.CharField(max_length=64, default="N/A", null=False)
     owner = models.CharField(max_length=64, default="N/A")
     track_length = models.FloatField(default=0.0, null=False)
-    configuration = models.CharField(max_length=16, default="Oval", null=False)
+    configuration = models.CharField(max_length=32, default="Oval", null=False)
     city = models.CharField(max_length=64, null=False, default="N/A")
     state = models.CharField(max_length=64, null=False, default="N/A")
+
+    class Meta:
+        models.UniqueConstraint(fields=["name"], name="unique_track_name")
+
+    def __str__(self) -> str:
+        return f"{self.name} {self.track_length} - {self.configuration}"
 
 
 class Race(Base):
     track = models.ForeignKey(Track, on_delete=models.CASCADE)
     race_date = models.DateField(null=True, auto_now_add=True)
+    models.UniqueConstraint(fields=["track", "race_date"], name="unique_race_date")
+
+    def __str__(self) -> str:
+        return f"{self.track} - {self.race_date}"
 
 
 class Results(Base):
