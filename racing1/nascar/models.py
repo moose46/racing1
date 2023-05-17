@@ -55,7 +55,7 @@ class Track(Base):
 
 class Race(Base):
     track = models.ForeignKey(Track, on_delete=models.CASCADE)
-    race_date = models.DateField(null=True, auto_now_add=True)
+    race_date = models.DateField(null=False)
     models.UniqueConstraint(fields=["track", "race_date"], name="unique_race_date")
 
     def __str__(self) -> str:

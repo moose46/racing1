@@ -52,15 +52,22 @@ def run():
                 data = RaceInfo(*row)
                 logging.info(f"{data}")
                 # for row in reader:
-                logging.info(f"data.DATE={data.DATE}")
+                logging.info(f"data.DATE={data.RACE_DATE}")
                 logging.info(f"data.TRACK={data.TRACK}")
-
-                race = Race.objects.get(race_date=data.DATE)
-                logging.info(f"get race={race}")
-                race = Race()
-                race.user = user
-                race.track = Track.objects.get(name=data.TRACK)
-                race.race_date = data.DATE
-                race.save()
-                logging.info(f"{race}")
+                try:
+                    track = Track.objects.get(name=data.TRACK)
+                    logging.info(
+                        f"\ntrack={track}\nrace_date={data.RACE_DATE}\ntrack.id={track.id}"
+                    )
+                    race = Race.objects.get(race_date=data.RACE_DATE, track_id=track.id)
+                    logging.info(f"\ntry race={race}")
+                except Race.DoesNotExist as e:
+                    logging.info(f"exception get race, creating new race")
+                    race = Race()
+                    race.user = user
+                    race.track = Track.objects.get(name=data.TRACK)
+                    logging.info(f"{data.RACE_DATE}")
+                    race.race_date = data.RACE_DATE
+                    race.save()
+                    logging.info(f"{race}")
                 break  # Just read the header

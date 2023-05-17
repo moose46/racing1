@@ -1,5 +1,5 @@
-TRACK	DATE
-Charlotte Motor Speedway	2022-05-12
+TRACK	RACE_DATE
+Charlotte Motor Speedway	2023-05-12
 POS	DRIVER	CAR	MANUFACTURER	LAPS	START	LED	PTS	BONUS	PENALTY
 1	Denny Hamlin	11	Toyota	413	1	15	42	2	0
 2	Kyle Busch	18	Toyota	413	4	36	35	0	0
