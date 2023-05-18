@@ -1,6 +1,6 @@
 """
-    Reads drivers.csv file and imports drivers into the drivers table.
-    If there are duplicates, it will stop, and throw up
+    Reads drivers.csv file and imports races into the races table.
+    If there are duplicates, it will ignore duplicates
     must have django-extensions installed and in entered into the INSTALLED_APPS settings file.
     
         INSTALLED_APPS = [
@@ -15,7 +15,7 @@
         ]
 
     to run:
-        python manage.py runscript load_tracks_from_csv
+        python manage.py runscript load_races_from_csv
 """
 import csv
 import logging
@@ -32,9 +32,9 @@ from nascar.models import Race, Track
 # https://k0nze.dev/posts/python-relative-imports-vscode/
 
 # https://k0nze.dev/posts/python-relative-imports-vscode/
-file_path = Path.cwd() / "scripts" / "results" / "2022"
+file_path = Path.cwd() / "scripts" / "results"
 logging.basicConfig(
-    filename="log_load_races.txt",
+    filename=Path.cwd() / "scripts" / "logs" / "log_load_races.txt",
     level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s",
     filemode="w",
@@ -43,31 +43,32 @@ logging.basicConfig(
 
 def run():
     user = User.objects.get(pk=1)
+    # find all the csv files and get the race header information for the track and date
     for race in file_path.glob("*.csv"):
-        logging.info(f"race={race}")
+        # logging.info(f"race={race}")
         with open(race) as f:
             reader = csv.reader(f, delimiter="\t")
             RaceInfo = namedtuple("RaceInfo", next(reader), rename=True)
             for row in reader:
                 data = RaceInfo(*row)
-                logging.info(f"{data}")
+                # logging.info(f"{data}")
                 # for row in reader:
-                logging.info(f"data.DATE={data.RACE_DATE}")
-                logging.info(f"data.TRACK={data.TRACK}")
+                # logging.info(f"data.DATE={data.RACE_DATE}")
+                # logging.info(f"data.TRACK={data.TRACK}")
                 try:
                     track = Track.objects.get(name=data.TRACK)
-                    logging.info(
-                        f"\ntrack={track}\nrace_date={data.RACE_DATE}\ntrack.id={track.id}"
-                    )
-                    race = Race.objects.get(race_date=data.RACE_DATE, track_id=track.id)
-                    logging.info(f"\ntry race={race}")
+                    # logging.info(
+                    #     f"\ntrack={track}\nrace_date={data.RACE_DATE}\ntrack.id={track.id}"
+                    # )
+                    race = Race.objects.get(race_date=data.RACE_DATE, track=track)
+                    logging.info(f"\nSkipping - race={data}")
                 except Race.DoesNotExist as e:
-                    logging.info(f"exception get race, creating new race")
+                    logging.info(f"\nInserting - {data}")
                     race = Race()
                     race.user = user
                     race.track = Track.objects.get(name=data.TRACK)
-                    logging.info(f"{data.RACE_DATE}")
+                    # logging.info(f"{data.RACE_DATE}")
                     race.race_date = data.RACE_DATE
                     race.save()
-                    logging.info(f"{race}")
+                    # logging.info(f"{race}")
                 break  # Just read the header
