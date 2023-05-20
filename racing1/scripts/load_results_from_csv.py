@@ -59,19 +59,28 @@ def run():
                 logging.info(f"race={race}")
                 ResultsInfo = namedtuple("ResultsInfo", next(reader), rename=True)
                 for row in reader:
-                    results = ResultsInfo(*row)
-                    logging.critical(f"results={results}")
+                    resultsInfo = ResultsInfo(*row)
+                    logging.critical(f"results={resultsInfo}")
                     try:
-                        logging.info(f"results={results.DRIVER}")
-                        driver = Driver.objects.get(name=results.DRIVER)
+                        logging.info(f"results={resultsInfo.DRIVER}")
+                        driver = Driver.objects.get(name=resultsInfo.DRIVER)
                         logging.info(f"driver={driver}")
                     except Driver.DoesNotExist as e:
-                        logging.debug(f"\n{results.DRIVER} Not Found")
+                        logging.debug(f"\n{resultsInfo.DRIVER} Not Found")
                         driver = Driver()
                         driver.user = user
-                        driver.name = results.DRIVER
+                        driver.name = resultsInfo.DRIVER
                         driver.save()
                         # results.driver = Driver.objects.get(name=Results.driver)
+                    results = Results()
+                    results.driver = driver
+                    results.race = race
+                    results.car = resultsInfo.CAR
+                    results.start_pos = resultsInfo.POS
+                    results.finish_pos = resultsInfo.FINISH
+                    results.manufacturer = resultsInfo.MANUFACTURER
+                    results.save()
+
             break
             #     race = Race()
             #     race.race_date = race_info.DATE
