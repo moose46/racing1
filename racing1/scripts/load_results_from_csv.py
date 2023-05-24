@@ -73,11 +73,12 @@ def run():
                         driver.save()
                         # results.driver = Driver.objects.get(name=Results.driver)
                     results = Results()
+                    results.user = user
                     results.driver = driver
                     results.race = race
                     results.car = resultsInfo.CAR
-                    results.start_pos = resultsInfo.POS
-                    results.finish_pos = resultsInfo.FINISH
+                    results.start_pos = resultsInfo.START
+                    results.finish_pos = resultsInfo.POS
                     results.manufacturer = resultsInfo.MANUFACTURER
                     results.save()
 
