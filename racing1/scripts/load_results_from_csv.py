@@ -55,8 +55,12 @@ def run():
             for header in reader:
                 data = RaceInfo(*header)
                 logging.info(f"\nRaceInfo={data}")
-                race = Race.objects.get(race_date=data.RACE_DATE)
-                logging.info(f"race={race}")
+                try:
+                    race = Race.objects.get(race_date=data.RACE_DATE)
+                    logging.info(f"race={race}")
+                except Race.DoesNotExist as e:
+                    logging.critical(f"{data.RACE_DATE} = {e}")
+                    exit()
                 ResultsInfo = namedtuple("ResultsInfo", next(reader), rename=True)
                 for row in reader:
                     resultsInfo = ResultsInfo(*row)
