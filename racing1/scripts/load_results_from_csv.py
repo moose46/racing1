@@ -39,38 +39,56 @@ logging.basicConfig(
 )
 
 
+def check_if_race_is_already_loaded(race_date):
+    try:
+        race = Race.objects.get(race_date=race_date)
+        logging.info(f"race_id={race.id}")
+        results_data = Results.objects.filter(race_id=race.id)
+        # results_data = Results.objects.extra(
+        #     select={
+        #         "race_count": f"select count(*) from nascar_results where race_id={race.id}",
+        #     }
+        # )
+        if results_data.count() > 0:
+            results_data.delete()
+        logging.critical(f"count={results_data.count()}")
+    except Race.DoesNotExist as e:
+        return False
+
+
 def run():
     # logging.info(file_path)
     user = User.objects.get(pk=1)
     for race_results in file_path.glob("*.csv"):
         # results = f.stem.split("_")[1]
-        # logging.info(race_results)
+        logging.info(f"\nProcessing File={race_results.name}")
         # Get the race details from the first header in the race results file
         # TRACK,RACE_DATE
         # Mid Ohio, 07/10/1946
-        logging.critical(f"{race_results}")
+        # logging.critical(f"{race_results}")
         with open(race_results) as f:
             reader = csv.reader(f, delimiter="\t")
             RaceInfo = namedtuple("RaceInfo", next(reader), rename=True)
             for header in reader:
                 data = RaceInfo(*header)
-                logging.info(f"\nRaceInfo={data}")
+                # logging.info(f"\nRaceInfo={data}")
                 try:
                     race = Race.objects.get(race_date=data.RACE_DATE)
-                    logging.info(f"race={race}")
+                    check_if_race_is_already_loaded(race_date=data.RACE_DATE)
+                    # logging.info(f"race={race}")
                 except Race.DoesNotExist as e:
-                    logging.critical(f"{data.RACE_DATE} = {e}")
+                    # logging.critical(f"{data.RACE_DATE} = {e}")
                     exit()
                 ResultsInfo = namedtuple("ResultsInfo", next(reader), rename=True)
                 for row in reader:
                     resultsInfo = ResultsInfo(*row)
-                    logging.critical(f"results={resultsInfo}")
+                    # logging.critical(f"results={resultsInfo}")
                     try:
-                        logging.info(f"results={resultsInfo.DRIVER}")
+                        # logging.info(f"results={resultsInfo.DRIVER}")
                         driver = Driver.objects.get(name=resultsInfo.DRIVER)
-                        logging.info(f"driver={driver}")
+                        # logging.info(f"driver={driver}")
                     except Driver.DoesNotExist as e:
-                        logging.debug(f"\n{resultsInfo.DRIVER} Not Found")
+                        # logging.debug(f"\n{resultsInfo.DRIVER} Not Found")
                         driver = Driver()
                         driver.user = user
                         driver.name = resultsInfo.DRIVER
@@ -86,7 +104,7 @@ def run():
                     results.manufacturer = resultsInfo.MANUFACTURER
                     results.save()
 
-            break
+            # break
             #     race = Race()
             #     race.race_date = race_info.DATE
             #     race.track = track_info
