@@ -49,9 +49,9 @@ def check_if_race_is_already_loaded(race_date):
         #         "race_count": f"select count(*) from nascar_results where race_id={race.id}",
         #     }
         # )
+        logging.critical(f"count={results_data.count()}")
         if results_data.count() > 0:
             results_data.delete()
-        logging.critical(f"count={results_data.count()}")
     except Race.DoesNotExist as e:
         return False
 
@@ -77,7 +77,9 @@ def run():
                     check_if_race_is_already_loaded(race_date=data.RACE_DATE)
                     # logging.info(f"race={race}")
                 except Race.DoesNotExist as e:
-                    # logging.critical(f"{data.RACE_DATE} = {e}")
+                    logging.critical(
+                        f"The Race Date {data.RACE_DATE} is not in the Database, exiting ....  = {e}"
+                    )
                     exit()
                 ResultsInfo = namedtuple("ResultsInfo", next(reader), rename=True)
                 for row in reader:

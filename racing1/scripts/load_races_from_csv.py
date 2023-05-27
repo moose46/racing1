@@ -54,9 +54,19 @@ def run():
                 # logging.info(f"{data}")
                 # for row in reader:
                 # logging.info(f"data.DATE={data.RACE_DATE}")
-                # logging.info(f"data.TRACK={data.TRACK}")
                 try:
-                    track = Track.objects.get(name=data.TRACK)
+                    if data.CONFIGURATION == "Road course":
+                        logging.info(
+                            f"fetching data.TRACK={data.TRACK} data.configuration={data.CONFIGURATION}"
+                        )
+                        track = Track.objects.get(
+                            name=data.TRACK, configuration=data.CONFIGURATION
+                        )
+                    else:
+                        logging.info(
+                            f"fetching data.TRACK={data.TRACK} data.configuration={data.CONFIGURATION}"
+                        )
+                        track = Track.objects.get(name=data.TRACK)
                     # logging.info(
                     #     f"\ntrack={track}\nrace_date={data.RACE_DATE}\ntrack.id={track.id}"
                     # )

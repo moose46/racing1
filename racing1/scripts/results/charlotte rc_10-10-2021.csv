@@ -1,5 +1,5 @@
-TRACK	RACE_DATE
-Charlotte Motor Speedway	2021-10-10
+TRACK	RACE_DATE	CONFIGURATION
+Charlotte Motor Speedway	2021-10-10	Road course
 POS	DRIVER	CAR	MANUFACTURER	LAPS	START	LED	PTS	BONUS	PENALTY
 1	Kyle Larson	5	Chevrolet	109	10	8	45	5	0
 2	Tyler Reddick	8	Chevrolet	109	29	0	35	0	0
