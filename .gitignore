@@ -6,18 +6,8 @@
 *.pyc
 db.*
 db.sqlite3
-
+migrations
+log*
 racing1/predictions_log.txt
-<<<<<<< HEAD
-racing1/log_file.txt
-racing1/db.sqlite3
-=======
-racing1/nascar/migrations/0005_alter_track_configuration.py
-racing1/nascar/migrations/0006_alter_track_name.py
->>>>>>> e0fbefac6d77b065daa2b1f3c50aa98fec197adb
-/racing1/log_file.txt
-/racing1/log_load_races.txt
-racing1/scripts/logs/log_results_races.txt
-racing1/scripts/logs/log_load_races.txt
-racing1/scripts/results/charlotte_05_29_2022.csv
 UsersmeDocumentsVisualCodeSourceracing1racing1db.racing1
+.gitignore

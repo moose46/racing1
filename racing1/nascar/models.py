@@ -1,3 +1,6 @@
+import datetime
+from ast import mod
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -15,20 +18,39 @@ class Base(models.Model):
         abstract = True
 
 
+class Team(Base):
+    team_name = models.CharField(max_length=32, null=False)
+    owner = models.CharField(max_length=32)
+
+    def __str__(self) -> str:
+        return self.team_name
+
+
 class Driver(Base):
+    CAR_MAKE_CHOICES = {
+        "CHEVROLET": "Chevrolet",
+        "TOYOTA": "Toyota",
+        "FORD": "Ford",
+    }
+    # team_name = models.ForeignKey(Team, on_delete=models.CASCADE)
     name = models.CharField(max_length=32, default="", null=False)
     car_no = models.IntegerField(default=99)
     sponsor = models.CharField(max_length=64, default="N/A")
-    make = models.CharField(max_length=32, default="N/A")
-    team = models.CharField(max_length=64, default="N/A")
+    make = models.CharField(
+        max_length=32, default=CAR_MAKE_CHOICES["CHEVROLET"], choices=CAR_MAKE_CHOICES
+    )
+    team_old = models.CharField(max_length=64, default="N/A")
     salary = models.IntegerField(default=3000)
-    starting_position = models.IntegerField(default=0)
+    # starting_position = models.IntegerField(default=0)
 
     def __str__(self) -> str:
         return self.name
 
     class Meta:
-        unique_together = ["name", "team"]
+        unique_together = [
+            "name",
+            "team_old",
+        ]
         ordering = ["name"]
 
 
@@ -36,7 +58,7 @@ class Track(Base):
     """TRACK,OWNER,MILES,CONFIG,CITY,STATE
 
     Args:
-        Base (_type_): _description_
+            Base (_type_): _description_
     """
 
     name = models.CharField(max_length=64, default="N/A", null=False)
@@ -55,7 +77,7 @@ class Track(Base):
 
 class Race(Base):
     track = models.ForeignKey(Track, on_delete=models.CASCADE)
-    race_date = models.DateField(null=False)
+    race_date = models.DateField(null=False, auto_now_add=False, auto_now=False)
     models.UniqueConstraint(fields=["track", "race_date"], name="unique_race_date")
 
     def __str__(self) -> str:
@@ -67,7 +89,7 @@ class Results(Base):
     POS	DRIVER	CAR	MANUFACTURER	LAPS	START	LED	PTS	BONUS	PENALTY
 
     Args:
-        Base (_type_): _description_
+            Base (_type_): _description_
     """
 
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
